@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+
+{% block title %}
+Error 404
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid custom-container">
+    <div class="row justify-content-between align-items-center">
+      <div class="col col-lg-2">
+        <h1 class="display-6" id="logo" style="white-space: nowrap">
+            <a href="/" style="color:inherit; text-decoration: none;">Smart Warehouse</a>
+        </h1>
+      </div>
+      <div class="col-md-auto">
+      </div>
+    </div>
+</div>
+<br><br><br>
+<h2 style="font-size: x-large; text-align: center;">ERROR 404 - PAGE NOT FOUND</h2><br><br>
+<p style="font-size: x-large; text-align: center;">The page you have tried to access does not exist or you don't have the privileges.<br>
+    Please click on the 'Smart Warehouse' logo to get redirected to the homepage.</p>
+
+{% endblock %}

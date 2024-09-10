@@ -1,0 +1,156 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Smart Warehouse API"
+  },
+
+  "paths": {
+    "/api/register":{
+      "post":{
+        "summary":"The user sends the username, password and role (either restaurant or supplier) in a JSON-formatted message and the server creates the account.",
+        "responses":{
+          "200":{
+            "description":"Account successfully created."
+          },
+          "400":{
+            "description":"The informations passed are incorrect. Remember that the username must present a length greater than 0, no spaces and it must not already be present in the database. The password should have a length greater than 7. Lastly, the role must either be restaurant or supplier."
+          },
+          "401":{
+            "description":"The informations sent are not JSON-formatted."
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "The user sends its username and password in a JSON-formatted message. Once the verification is performed, if the account exists, a JWT token is returned, otherwise an error occour.",
+        "responses": {
+          "200": {
+            "description": "The user receives the JWT token."
+          },
+          "400":{
+            "description": "An error has accoured"
+          },
+          "401":{
+            "description": "The content of the message sent to the URL is not JSON formatted"
+          }
+        }
+      }
+    },
+    "/api/account/deletion":{
+      "delete":{
+        "summary":"The user presents a JWT token, if valid, the account is deleted.",
+        "responses":{
+          "200":{
+            "description":"Account successfully deleted."
+          }
+        }
+      }
+    },
+    "/api/route/getOptimalRoute":{
+      "post":{
+        "summary": "The user sends a list of coordinates which needs to be formattere as lists too. The output will be a lists of coordinates which resembles the optimal path. ",
+        "responses":{
+          "200":{
+            "description":"The user receives the optimal route coordinates formatted in a JSON-like style." 
+          },
+          "400":{
+            "description":"An error has occured while computing the TSP algorithm. The error might be due to either OR-tools or OSRM that might be temporary disabled."
+          },
+          "401":{
+            "description":"The informations sent are not JSON-formatted."
+          }
+      }
+    }
+  },
+    "/api/account/role":{
+      "get":{
+        "summary":"The user presents a JWT token, if valid, the account role is returned.",
+        "responses":{
+          "200":{
+            "description":"Account role returned."
+          }
+        }
+      }
+    },
+    "/api/restaurants":{
+      "get":{
+        "summary": "The user presents a JWT token, if valid, the restaurant informations are returned.",
+        "responses":{
+          "200":{
+            "description":"The user receives all the restaurants informations formatted in a JSON-like style. Specifically, each restaurant will be formatted as a dictionary where the key is Restaurant_<number> and the elements retrived are its id, number, partita iva, name, latitude and longitude." 
+          }
+      }
+    }
+  },
+  "/api/restaurants/insertion":{
+      "post": {
+        "summary":"The user presents a JWT token, if valid and if the informations provided are correct, the restaurant is created (only if the user role is a restaurant owner) and associated to its own account.",
+        "responses":{
+          "200":{
+            "description":"The user sends in a JSON-style format a message containing name, PIVA, and an existing address, city and CAP. The restaurant gets successfully inserted."
+          },
+          "400":{
+            "description":"The information passed are either incorrect or the restaurant is either already present (if you want are a restaurant owner) or not present (if you are a supplier) or an error has occoured."
+          },
+          "401":{
+            "description":"The informations sent are not JSON-formatted."
+          }
+      }
+      }
+  },
+  "/api/restaurants/<int:restaurant_number>/elements":{
+    "get":{
+      "summary": "The user presents a JWT token, if valid, the elements information associated to the user restaurant id specified are returned.",
+      "responses":{
+        "200":{
+          "description":"The user receives all the elements informations formatted in a JSON-like style. Specifically, if the user is a restaurant owner, they will receive the id, internal code, current quantity, description, total capacity, the date of the next supply (None if not present) and the quantity to deliver (None if not present). Instead, if the user is a supplier, they will only receive the id, description, date next supply (None if it is not present) and quantity to deliver (None if it is not present). The values will be formatted as a dictionary where the the keys will be Element_<number> and its values are the ones previously stated. "
+        },
+        "400":{
+          "description":"The restaurant requested doesn't exist."
+        }
+      }
+    }
+  },
+  "/api/restaurants/<int:restaurant_number>/deletion":{
+    "delete":{
+      "summary":"The user presents a JWT token, if valid and if the restaurant number is associated to themselves, the restaurant is either removed (in case of a supplier) or deleted from the database (in case of a restaurant owner).",
+      "responses":{
+        "200":{
+          "description":"Deletition is performed."
+        },
+        "400":{
+          "description":"The restaurant requested either doesn't exist or it is not associated to the given account."
+        }
+      }
+    }
+  },
+  "/api/elements/<int:element_id>/forecast":{
+    "get":{
+      "summary":"The user presents a JWT token, if valid, the quantity and date of the element id specified are returned.",
+      "responses":{
+        "200":{
+          "description":"Depending if the forecast has already been performed or not, a JSON is returned where the date (date_next_supply) and quantity (quantity_to_deliver) are returned. If no forecast has yet been performed, both date and quantity values are set to None."
+        },
+        "400":{
+          "description":"The element id requested is either not associated to your account or it doesn't exist."
+        }
+      }
+    }
+  },
+  "/api/elements/<int:element_id>/boxes":{
+    "get":{
+      "summary":"The user presents a JWT token, if valid and if it's a restaurant owner, all the boxes information associated to the element id are returned.",
+      "responses":{
+        "200":{
+          "description":"All the boxes information are returned in a JSON-like format. Specifically, the keys are Box_<number> and the values associated to it are: id, rfid, internal_code, description, quantity and capacity."
+        },
+        "400":{
+          "description":"You are either not a restaurant owner or the element id requested is either not associated to your account or it doesn't exist."
+        }
+      }
+    }
+  }
+}
+}

@@ -1,0 +1,25 @@
+--> CASO SUPPLIER
+
+Supponiamo io sia un supplier di GiustoSpirito (restaurant number = 3) e abbia 5 element (element_id= 1, 7, 4, 0, 2)
+
+Io conosco sia il restaurant number che l'id di ogni elemento (perchè avevo fatto in precedenza le richieste a /api/restaurants che mi dice tutti i restaurant number
+e poi a /api/restaurant/number/elements che mi dice per ogni ristorante gli id degli elementi ad esso associato).
+
+SICCOME ho queste informazioni, (sia il restaurant number che l'id di ogni elemento) faccio una subscribe ad MQTT PER OGNI ELEMENTO a 
+/restaurants/{restaurant_number}/elements/{element.id}/supply con QoS=1. (quindi saranno queste quelle che devo fare:
+
+/restaurants/3/elements/1/supply 
+/restaurants/3/elements/7/supply
+/restaurants/3/elements/4/supply 
+/restaurants/3/elements/0/supply 
+/restaurants/3/elements/2/supply  
+
+Questo significa che: la prima volta che ho fatto il login ho le informazioni della quantità e data del next supply sono date dal server, 
+MA dopo le informazioni sulla modifica di questi elementi mi verranno da MQTT.
+
+Domanda lecita: MA COME FACCIO A SAPERE A CHI SI RIFERISCONO LE INFORMAZIONI (a che ristorante ed elemento i dati che ho ricevuti si riferiscono)?????
+Semplice: /restaurants/3/elements/1/supply ---> il 3 significa restaurant_number=3 e element_id=1 (devi sovrascrivere i valori relativi all'elemento 1 del restaurant number 3)
+
+
+Es. element_id=1  restaurant_number=3 (il server pubblica una modifica dei valori su MQTT)
+L'app siccome si è iscritta al topic /restaurants/3/elements/1/supply riceverà un messaggio con le informazioni della quantità e date next supply.

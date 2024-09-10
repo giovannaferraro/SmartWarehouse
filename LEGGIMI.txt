@@ -1,0 +1,9 @@
+Per il routing --> https://openrouteservice.org/services/
+
+1) esegui: pip install -r requirements.txt
+2) esegui: pip install cmdstanpy==0.9.5 (questo ti darà un errore (dicendo che non dovrebbe essere 
+										corretto e che dovresti usare una versione successiva) ma in 
+										realtà te lo fa funzionare. 
+										(https://github.com/facebook/prophet/issues/2227)) 
+										(putroppo non si può mettere nei requirements perchè
+							            rompe dicendo che prophet si aspetta una versione successiva)

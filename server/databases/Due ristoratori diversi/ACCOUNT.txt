@@ -1,0 +1,10 @@
+Restaurant:
+username: restaurant1
+password: 12345678900
+
+username: restaurant2
+password: 12345678900
+
+Supplier
+username: supplier
+password: 12345678900

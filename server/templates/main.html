@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<body>
+    <div class="grid">
+        <img class="home_image" src="{{ url_for('static', filename='warehouse.jpeg') }}">
+        <h1 class="display-1"> Smart Warehouse</h1>
+        <p class="testo">
+            Smart Warehouse is an innovative IoT solution invented to make restaurant <br>
+            owners and suppliers lives easier.It combines the power of weight scaling <br>
+            and computation, in order to cut down the amount of time spent counting <br>
+            every element in the storage and the necessity of calling the supplier. <br>
+            Smart Warehouse will do it for YOU! <br><br>
+            To use this system, Login is necessary. <br>
+            Click the button under this text to access to your account.
+        </p>
+    </div>
+    <a class="btn btn-primary btn-lg" id="login-button" href="login" role="button">Login</a>
+    <p class="h6" style="position:absolute; bottom:5px; text-align: center; width: 100%;"> This product has been designed and created by Mattia Grasselli and Giovanna Ferraro</p>
+</body>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid custom-container">
+    <div class="row justify-content-between align-items-center">
+      <div class="col col-lg-2">
+        <h1 class="display-6" id="logo" style="white-space: nowrap">
+            <a href="/" style="color:inherit; text-decoration: none;">Smart Warehouse</a>
+        </h1>
+      </div>
+      <div class="col-md-auto">
+      </div>
+    </div>
+</div>
+
+<h2 id="login">Login</h2>
+
+<div id="forms">
+    <form method="post" action="/login">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="username" class="form-control" id="UrsenameInput" aria-describedby="username" name="username"
+                placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="PasswordInput" name="password" placeholder="Password">
+            <div id="passwordHelp" class="form-text">The password needs to be composed of at least 8 characters</div>
+        </div>
+        <p style="font-size: small;">If you don't have an account, register <a href="/register" style="color:inherit; text-decoration: none; font-weight: bold;">here</a></p>
+        <br>
+        <button type="submit" class="btn btn-primary" id="SubmitButton">Submit</button>
+    </form>
+</div>
+{% endblock %}

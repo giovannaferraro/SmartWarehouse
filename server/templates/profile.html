@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+{% endblock %}
+
+{% block content%}
+<script>
+    window.onload = function () {
+      const btn = document.getElementById('delete_button');
+      const url =btn.dataset.id;
+      btn.onclick = function () {
+        fetch(url, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.redirect){
+            window.location.href=data.redirect;
+          }
+        });
+      };
+    }
+</script>
+
+<div class="container-fluid custom-container">
+    <div class="row justify-content-between align-items-center">
+      <div class="col col-lg-2">
+        <h1 class="display-6" id="logo" style="white-space: nowrap">
+            <a href="/" style="color:inherit; text-decoration: none;">Smart Warehouse</a>
+        </h1>
+      </div>
+      <div class="col-md-auto">
+      </div>
+    </div>
+</div>
+<br>
+<br>
+<p style="font-weight: bold; margin-left: 5%;">Username: {{user.name}}<br><br>
+   ID: {{user.id}}<br><br>
+   Role: {{user.role}}<br><br>
+   Restaurants:
+</p>
+<div id="grid" class="row row-cols-1 row-cols-md-2 g-4">
+    {% for _ in user.restaurants %}
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{_.name}}</h5>
+                <p class="card-text">Partita Iva: {{_.p_iva}}<br><br>Address: {{locations[(_.p_iva,_.name)]}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br><br>
+<div>
+    <p style="font-weight: bold; margin-left: 5%;">Delete restaurant:
+      <button class="btn btn-danger" id="delete_button" data-id="/users/{{user.name}}/profile">
+        Delete your account
+      </button>
+    </p>
+</div>
+<br>
+<form method="POST" action="/users/{{user.name}}/profile" >
+    <p style="font-weight: bold; margin-left: 5%;">Sign out: <button type="submit" class="btn btn-danger">Sign out</button></p>
+</form>
+{% endblock %}

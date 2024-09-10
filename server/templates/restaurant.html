@@ -1,0 +1,91 @@
+{% extends 'index.html' %}
+
+{% block title %}
+Restaurant
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='restaurant.css') }}">
+{% endblock %}
+
+{% block content %}
+<script>
+  window.onload = function () {
+    const btn = document.getElementById('delete_button');
+    const url =btn.dataset.id;
+    btn.onclick = function () {
+      fetch(url, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.redirect){
+          window.location.href=data.redirect;
+        }
+      });
+    };
+  }
+</script>
+<div class="container-fluid custom-container">
+  <div class="row justify-content-between align-items-center">
+    <div class="col col-lg-2">
+      <h1 class="display-6" id="logo" style="white-space: nowrap">
+        <a href="/" style="color:inherit; text-decoration: none;">Smart Warehouse</a>
+      </h1>
+    </div>
+    <div class="col-md-auto">
+      <a href="/users/{{user.name}}/profile" style="color:inherit; text-decoration: none;">
+        <svg id="icon" xmlns="{{url_for('static',filename='person-circle.svg')}}" width="40" height="40"
+          fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+          <path fill-rule="evenodd"
+            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<h2 id="welcome">{{restaurant.name}}</h2><br><br>
+<div class="container text-left">
+  <div class="row row-cols-2">
+    <div class="col">
+      {% if user.role == 'restaurant'%}
+      <p style="font-size: large; font-weight: bold;">ID: </p>
+      <p>{{restaurant.id}}</p><br>
+      {% endif %}
+      <p style="font-size: large; font-weight: bold;">Partita Iva:</p> {{restaurant.p_iva}}<br><br>
+      <p style="font-size: large; font-weight: bold;">Address:</p> {{address}}<br><br><br><br>
+      <p style="font-size: large; font-weight: bold;">Go to the restaurant' elements: <a
+          href="/users/{{user.name}}/restaurants/{{restaurant.number}}/elements" class="btn btn-primary">Elements</a>
+      </p><br></p>
+      <div>
+        <p style="font-size: large; font-weight: bold;">
+          {%if user.role == 'restaurant'%}
+          Delete restaurant:
+          {%else%}
+          Remove restaurant
+          {%endif%}
+          <button class="btn btn-danger" id="delete_button" data-id="/users/{{user.name}}/restaurants/{{restaurant.number}}">
+            {%if user.role == 'restaurant' %}
+            Delete
+            {%else%}
+            Remove
+            {%endif%}
+          </button>
+        </p>
+      </div>
+      <!--
+      form method="post" action="{{restaurant.number}}">
+        <p style="font-size: large; font-weight: bold;">Delete restaurant:
+          <input type="hidden" name="_method" value="DELETE"></input>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </p>
+      </form>
+      -->
+    </div>
+    <div class="col" style="width: 500px; height: 380px;">{{ map|safe}}</div>
+  </div>
+</div>
+
+{% endblock %}

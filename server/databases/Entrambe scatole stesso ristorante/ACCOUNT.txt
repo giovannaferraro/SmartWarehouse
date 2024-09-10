@@ -1,0 +1,7 @@
+Ristoratore:
+username: restaurant
+password: 12345678900
+
+Supplier:
+username: supplier
+password: 12345678900
